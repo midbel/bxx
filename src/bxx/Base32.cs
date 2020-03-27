@@ -2,7 +2,7 @@ using System.Text;
 
 namespace bxx
 {
-    public sealed class Base32
+    public sealed class Base32 : IEncoder
     {
         private static readonly string std = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
         private static readonly string hex = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
