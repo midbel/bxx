@@ -2,7 +2,7 @@ using System.Text;
 
 namespace bxx
 {
-    public class Base32
+    public sealed class Base32
     {
         private static readonly string std = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
         private static readonly string hex = "0123456789ABCDEFGHIJKLMNOPQRSTUV";
@@ -123,6 +123,68 @@ namespace bxx
                 if (padding && padchar > 0)
                 {
                     buf.Append('=', padchar);
+                }
+            }
+            return buf.ToString();
+        }
+
+        public string Decode(string str)
+        {
+            return Decode(Encoding.ASCII.GetBytes(str));
+        }
+
+        public string Decode(byte[] str)
+        {
+            var buf = new StringBuilder();
+            for (int i = 0; i < str.Length; i += 8)
+            {
+                var a = (ulong)alphabet.IndexOf((char)str[i]);
+                var b = (ulong)alphabet.IndexOf((char)str[i + 1]);
+                var c = (ulong)alphabet.IndexOf((char)str[i + 2]);
+                var d = (ulong)alphabet.IndexOf((char)str[i + 3]);
+                var e = (ulong)alphabet.IndexOf((char)str[i + 4]);
+                var f = (ulong)alphabet.IndexOf((char)str[i + 5]);
+                var g = (ulong)alphabet.IndexOf((char)str[i + 6]);
+                var h = (ulong)alphabet.IndexOf((char)str[i + 7]);
+
+                if (str[i + 2] == '=')
+                {
+                    ulong z = (b >> 2) | a << 3;
+                    buf.Append((char)z);
+                }
+                else if (str[i + 4] == '=')
+                {
+                    ulong z = (d >> 4) | (c << 1) | (b << 6) | (a << 11);
+
+                    buf.Append((char)((z >> 8) & 0xFF));
+                    buf.Append((char)(z & 0xFF));
+                }
+                else if (str[i + 5] == '=')
+                {
+                    ulong z = (e >> 1) | (d << 4) | (c << 9) | (b << 14) | (a << 19);
+
+                    buf.Append((char)((z >> 16) & 0xFF));
+                    buf.Append((char)((z >> 8) & 0xFF));
+                    buf.Append((char)(z & 0xFF));
+                }
+                else if (str[i + 7] == '=')
+                {
+                    ulong z = (g >> 3) | (f << 2) | (e << 7) | (d << 12) | (c << 17) | (b << 22) | (a << 27);
+
+                    buf.Append((char)((z >> 24) & 0xFF));
+                    buf.Append((char)((z >> 16) & 0xFF));
+                    buf.Append((char)((z >> 8) & 0xFF));
+                    buf.Append((char)(z & 0xFF));
+                }
+                else
+                {
+                    ulong z = h | (g << 5) | (f << 10) | (e << 15) | (d << 20) | (c << 25) | (b << 30) | (a << 35);
+
+                    buf.Append((char)((z >> 32) & 0xFF));
+                    buf.Append((char)((z >> 24) & 0xFF));
+                    buf.Append((char)((z >> 16) & 0xFF));
+                    buf.Append((char)((z >> 8) & 0xFF));
+                    buf.Append((char)(z & 0xFF));
                 }
             }
             return buf.ToString();

@@ -2,7 +2,7 @@ using System.Text;
 
 namespace bxx
 {
-    public class Base64
+    public sealed class Base64
     {
         private static readonly string std = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         private static readonly string url = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace bxx
 {
-    public class Base16
+    public sealed class Base16
     {
         public static Base16 Std = new Base16();
 

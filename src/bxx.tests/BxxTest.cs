@@ -77,6 +77,23 @@ namespace bxx.tests
             Assert.Equal("CPNMUOJ1", Base32.Hex.Encode("fooba"));
             Assert.Equal("CPNMUOJ1E8======", Base32.Hex.Encode("foobar"));
         }
+
+        [Fact]
+        public void TestStdDecode()
+        {
+            Assert.Equal("f", Base32.Std.Decode("MY======"));
+            Assert.Equal("fo", Base32.Std.Decode("MZXQ===="));
+            Assert.Equal("foo", Base32.Std.Decode("MZXW6==="));
+            Assert.Equal("foob", Base32.Std.Decode("MZXW6YQ="));
+            Assert.Equal("fooba", Base32.Std.Decode("MZXW6YTB"));
+            //Assert.Equal("foobar", Base32.Std.Decode("CPNMUOJ1E8======"));
+        }
+
+        [Fact]
+        public void TestHexDecode()
+        {
+            Assert.Equal("fooba", Base32.Hex.Decode("CPNMUOJ1"));
+        }
     }
 
     public class Base16Test

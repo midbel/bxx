@@ -6,7 +6,7 @@ namespace bxx.cli
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Base64.Std.Decode("Zm9vYmE="));
+            Console.WriteLine(Base32.Std.Decode("MZXQ===="));
         }
     }
 }
