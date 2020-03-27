@@ -32,8 +32,20 @@ namespace bxx.tests
         }
 
         [Fact]
+        public void TestUrlDecode()
+        {
+            Assert.Equal("foo", Base64.Url.Decode("Zm9v"));
+            Assert.Equal("foob", Base64.Url.Decode("Zm9vYg=="));
+            Assert.Equal("fooba", Base64.Url.Decode("Zm9vYmE="));
+            Assert.Equal("foobar", Base64.Url.Decode("Zm9vYmFy"));
+        }
+
+        [Fact]
         public void TestStdDecode()
         {
+            Assert.Equal("f", Base64.Std.Decode("Zg=="));
+            Assert.Equal("fo", Base64.Std.Decode("Zm8="));
+            Assert.Equal("foo", Base64.Std.Decode("Zm9v"));
             Assert.Equal("foob", Base64.Std.Decode("Zm9vYg=="));
             Assert.Equal("fooba", Base64.Std.Decode("Zm9vYmE="));
             Assert.Equal("foobar", Base64.Std.Decode("Zm9vYmFy"));

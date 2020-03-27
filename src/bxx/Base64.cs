@@ -90,7 +90,37 @@ namespace bxx
 
         public string Decode(byte[] str)
         {
-            return "";
+            var buf = new StringBuilder();
+            for (int i = 0; i < str.Length; i += 4)
+            {
+                int a = alphabet.IndexOf((char)str[i]);
+                int b = alphabet.IndexOf((char)str[i + 1]);
+                int c = alphabet.IndexOf((char)str[i + 2]);
+                int d = alphabet.IndexOf((char)str[i + 3]);
+
+                if (str[i + 2] == '=')
+                {
+                    int e = (a << 2) | (b >> 4);
+                    buf.Append((char)e);
+                }
+                else if (str[i + 3] == '=')
+                {
+                    int e = c >> 2 | b << 4 | a << 10;
+
+                    buf.Append((char)((e >> 8) & 0xFF));
+                    buf.Append((char)(e & 0xFF));
+                }
+                else
+                {
+                    int e = d | (c << 6) | (b << 12) | (a << 18);
+
+                    buf.Append((char)((e >> 16) & 0xFF));
+                    buf.Append((char)((e >> 8) & 0xFF));
+                    buf.Append((char)(e & 0xFF));
+                }
+
+            }
+            return buf.ToString();
         }
     }
 }
